@@ -129,6 +129,35 @@ def printPath(root_node):
     printMatrix(root_node.matrix)
     print()
 
+def isReachable (initial_matrix, empty_tile) -> bool :
+    countX = 0
+    countLess = 0
+    for i in range(4):
+        for j in range(4):
+            m = i
+            n = j
+            if(m==i):
+                while(n<4):
+                    if(initial_matrix[m][n]<initial_matrix[i][j]):
+                        countLess += 1
+                    n+=1
+                m+=1
+            while(m<4):
+                n = 0
+                while(n<4):
+                    if(initial_matrix[m][n]<initial_matrix[i][j]):
+                        countLess += 1
+                    n+=1
+                m+=1
+    if ((empty_tile[0]+empty_tile[1])%2 == 1):
+        countX += 1
+    print("CountX = ", countX)
+    print("CountLess = ", countLess)
+    countTotal = countX + countLess
+    if (countTotal % 2 == 0):
+        return True
+    else : 
+        return False
 
 initial_matrix = [ [ 1, 2, 3, 4 ],
                    [ 5, 6, 16, 8 ],
@@ -143,6 +172,7 @@ final_matrix = [ [ 1, 2, 3, 4 ],
 empty_tile = [ 1, 2 ]
 
 Solve(initial_matrix, empty_tile, final_matrix)
+# isReachable(initial_matrix, empty_tile)
 
 
 
