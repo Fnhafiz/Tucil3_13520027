@@ -149,7 +149,7 @@ def isReachable (initial_matrix, empty_tile) -> bool :
                         countLess += 1
                     n+=1
                 m+=1
-    if ((empty_tile[0]+empty_tile[1])%2 == 1):
+    if ((empty_tile[0]+empty_tile[1]) %2 == 1):
         countX += 1
     print("CountX = ", countX)
     print("CountLess = ", countLess)
@@ -164,6 +164,11 @@ initial_matrix = [ [ 1, 2, 3, 4 ],
                    [ 9, 10, 7, 11 ],
                    [ 13, 14, 15, 12 ] ]
 
+initial_matrix_2 = [ [ 1, 3, 4, 15 ],
+                   [ 2, 16, 5, 12 ],
+                   [ 7, 6, 11, 14 ],
+                   [ 8, 9, 10, 13 ] ]
+
 final_matrix = [ [ 1, 2, 3, 4 ],
                  [ 5, 6, 7, 8 ],
                  [ 9, 10, 11, 12 ],
@@ -171,8 +176,10 @@ final_matrix = [ [ 1, 2, 3, 4 ],
 
 empty_tile = [ 1, 2 ]
 
+empty_tile_2 = [ 1, 1 ]
+
 Solve(initial_matrix, empty_tile, final_matrix)
-# isReachable(initial_matrix, empty_tile)
+# isReachable(initial_matrix_2, empty_tile_2)
 
 
 
