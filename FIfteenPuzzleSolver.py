@@ -162,10 +162,17 @@ def isReachable (initial_matrix, empty_tile) -> bool :
     else : 
         return False
 
+# Masukan matriks yang dibangkitkan secara acak
 def generate_random():
     initial_matrix = np.arange(1, 17)
     np.random.shuffle(initial_matrix)
     initial_matrix = np.reshape(initial_matrix,(4,4))
+    return initial_matrix
+
+# Masukan matriks yang dibangkitkan sesuai input pengguna
+def input_user(input):
+    with open(input, 'r') as f:
+        initial_matrix = [[int(num) for num in line.split(',')] for line in f]
     return initial_matrix
 
 # initial_matrix = [ [ 1, 2, 3, 4 ],
@@ -190,7 +197,8 @@ empty_tile_2 = [ 1, 1 ]
 # Solve(initial_matrix, empty_tile, final_matrix)
 # isReachable(initial_matrix_2, empty_tile_2)
 
-initial_matrix = generate_random()
+# initial_matrix = generate_random()
+initial_matrix = input_user('test_case1.txt')
 printMatrix(initial_matrix)
 
 
