@@ -1,5 +1,8 @@
 import copy
+import numpy as np
 from heapq import heappush, heappop
+
+from pandas import array
 
 class PriorityQueue :
     # Konstruktor : Inisialisasi Priority Queue
@@ -159,10 +162,16 @@ def isReachable (initial_matrix, empty_tile) -> bool :
     else : 
         return False
 
-initial_matrix = [ [ 1, 2, 3, 4 ],
-                   [ 5, 6, 16, 8 ],
-                   [ 9, 10, 7, 11 ],
-                   [ 13, 14, 15, 12 ] ]
+def generate_random():
+    initial_matrix = np.arange(1, 17)
+    np.random.shuffle(initial_matrix)
+    initial_matrix = np.reshape(initial_matrix,(4,4))
+    return initial_matrix
+
+# initial_matrix = [ [ 1, 2, 3, 4 ],
+#                    [ 5, 6, 16, 8 ],
+#                    [ 9, 10, 7, 11 ],
+#                    [ 13, 14, 15, 12 ] ]
 
 initial_matrix_2 = [ [ 1, 3, 4, 15 ],
                    [ 2, 16, 5, 12 ],
@@ -178,8 +187,10 @@ empty_tile = [ 1, 2 ]
 
 empty_tile_2 = [ 1, 1 ]
 
-Solve(initial_matrix, empty_tile, final_matrix)
+# Solve(initial_matrix, empty_tile, final_matrix)
 # isReachable(initial_matrix_2, empty_tile_2)
 
+initial_matrix = generate_random()
+printMatrix(initial_matrix)
 
 
