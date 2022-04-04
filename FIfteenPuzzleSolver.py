@@ -98,6 +98,7 @@ def Solve(initial_matrix, empty_tile, final_matrix):
 
         # Jika cost = 0, artiny tidak ada lagi ubin yang berbeda dengan susunan akhir
         if min_node.cost == 0 :
+            print("Jumlah simpul yang dibangkitkan = ", min_node.level+1, "\n")
             return min_node
 
         for i in range(4):
@@ -246,7 +247,7 @@ if (choice == 1):
     if (reach == False):
         print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
         printMatrix(initial_matrix)
-        print("\n Persoalan diatas tidak dapat diselesaikan")
+        print("\nPersoalan diatas tidak dapat diselesaikan")
     else :
         min_node = Solve(initial_matrix, empty_tile, final_matrix)
         print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
@@ -262,7 +263,6 @@ elif (choice == 2):
     start_time = time.time()
     reach = isReachable(initial_matrix, empty_tile)
     if (reach == False):
-        print("salah")
         print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
         printMatrix(initial_matrix)
         print("\n Persoalan diatas tidak dapat diselesaikan")
