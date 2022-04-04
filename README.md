@@ -16,7 +16,7 @@ Jika belum dapat melakukan install dengan cara sebagai berikut pada terminal and
 3. pip install tkinter
 
 ## Langkah Compile Program
-Program hanya berada pada satu file python jupyter notebook (ipynb) sehingga tidak diperlukan compile program
+Program hanya berada pada satu file python  sehingga tidak diperlukan compile program
 
 ## Cara Run Program
 Pada VsCode :
