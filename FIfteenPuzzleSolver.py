@@ -1,9 +1,8 @@
 import copy
 import numpy as np
+import time
+from tkinter import *
 from heapq import heappush, heappop
-
-from pandas import array
-
 class PriorityQueue :
     # Konstruktor : Inisialisasi Priority Queue
     def __init__(self):
@@ -39,7 +38,7 @@ class node :
     def __lt__ (self, next):
         return self.cost < next.cost
 
-# bottom, left, top, right
+# Bergerak ke bawah, kiri, atas, kanan
 rows = [ 1, 0, -1, 0 ]
 cols = [ 0, -1, 0, 1 ]
 
@@ -76,7 +75,6 @@ def newNode (parent, matrix, empty_tile, new_empty_tile, level, final_matrix) ->
 def isValid (x,y):
     return x>=0 and x<4 and y>=0 and y<4
 
-
 # Menyelesaikan 15-Puzzle
 def Solve(initial_matrix, empty_tile, final_matrix):
     
@@ -91,15 +89,17 @@ def Solve(initial_matrix, empty_tile, final_matrix):
 
     # Melakukan push root_node sebelumnya ke dalam Priority Queue
     pq.push(root_node)
+    visited_node = []
+    visited_node.append(root_node)
 
     while not pq.isEmpty(): 
+        is_visited = False
         min_node = pq.pop()
 
         # Jika cost = 0, artiny tidak ada lagi ubin yang berbeda dengan susunan akhir
         if min_node.cost == 0 :
-            printPath(min_node)
-            return
-        
+            return min_node
+
         for i in range(4):
             new_tile = [min_node.empty_tile[0] + rows[i],
                         min_node.empty_tile[1] + cols[i],]
@@ -107,10 +107,8 @@ def Solve(initial_matrix, empty_tile, final_matrix):
             if (isValid(new_tile[0], new_tile[1])):
                 child = newNode(min_node, min_node.matrix, min_node.empty_tile, new_tile, min_node.level + 1, final_matrix)
                 pq.push(child)
-                # printMatrix(min_node.matrix)
-                # printMatrix(child.matrix)
 
-
+# Mengeluarkan output berupa matriks
 def printMatrix(mat):
      
     for i in range(4):
@@ -123,6 +121,7 @@ def printMatrix(mat):
                 print("%d " % (mat[i][j]), end = " ")     
         print()
 
+# Mengeluarkan semua path matriks dari solusi
 def printPath(root_node):
      
     if root_node == None:
@@ -132,6 +131,7 @@ def printPath(root_node):
     printMatrix(root_node.matrix)
     print()
 
+# Mengecek apakah puzzle dapat diselesaikan
 def isReachable (initial_matrix, empty_tile) -> bool :
     countX = 0
     countLess = 0
@@ -154,9 +154,9 @@ def isReachable (initial_matrix, empty_tile) -> bool :
                 m+=1
     if ((empty_tile[0]+empty_tile[1]) %2 == 1):
         countX += 1
-    print("CountX = ", countX)
-    print("CountLess = ", countLess)
+    print("\nNilai dari fungsi Kurang(i) = ", countLess)
     countTotal = countX + countLess
+    print("Nilai dari fungsi Kurang(i) + X = ", countTotal, "\n")
     if (countTotal % 2 == 0):
         return True
     else : 
@@ -175,30 +175,108 @@ def input_user(input):
         initial_matrix = [[int(num) for num in line.split(',')] for line in f]
     return initial_matrix
 
-# initial_matrix = [ [ 1, 2, 3, 4 ],
-#                    [ 5, 6, 16, 8 ],
-#                    [ 9, 10, 7, 11 ],
-#                    [ 13, 14, 15, 12 ] ]
+# Mencari letak tile yang kosong (berisi angka 16)
+def find_empty_tile(initial_matrix):
+    # empty_tile = [ for _ in range(2)]
+    empty_tile = [0 for i in range(2)]
+    for i in range(4):
+        for j in range(4):
+            if (initial_matrix[i][j] == 16) :
+                empty_tile[0] = i
+                empty_tile[1] = j 
+                return empty_tile
 
-initial_matrix_2 = [ [ 1, 3, 4, 15 ],
-                   [ 2, 16, 5, 12 ],
-                   [ 7, 6, 11, 14 ],
-                   [ 8, 9, 10, 13 ] ]
+# GUI Bonus 
+# Class Table untuk GUI
+class Table:    
+    def __init__(self,root):
+         
+        # code for creating table
+        for i in range(total_rows):
+            for j in range(total_columns):
+                if(lst[i][j] == 16):               
+                    self.e = Entry(root, width=3, fg='white', bg='white',
+                                   font=('Arial',16,'bold'))
+                    
+                    self.e.grid(row=i, column=j)
+                    self.e.insert(END, lst[i][j])
+                elif(lst[i][j] != 16):
+                    self.e = Entry(root, width=3, fg='white', bg='blue',
+                                   font=('Arial',16,'bold'))
+                    
+                    self.e.grid(row=i, column=j)
+                    self.e.insert(END, lst[i][j])
 
-final_matrix = [ [ 1, 2, 3, 4 ],
-                 [ 5, 6, 7, 8 ],
-                 [ 9, 10, 11, 12 ],
-                 [ 13, 14, 15, 16 ] ]
+# Mengeluarkan output berupa GUI dari solusi
+def printPathGUI (root_node):
+    global total_rows, total_columns, lst
+    if root_node == None:
+        return
 
-empty_tile = [ 1, 2 ]
+    printPathGUI(root_node.parent)
+    lst = root_node.matrix
+    total_rows = len(lst)
+    total_columns = len(lst[0])
+    root = Tk()
+    t = Table(root)
+    root.mainloop()
 
-empty_tile_2 = [ 1, 1 ]
+final_matrix = [(1,2,3,4),
+                (5,6,7,8),
+                (9,10,11,12),
+                (13,14,15,16),]
 
-# Solve(initial_matrix, empty_tile, final_matrix)
-# isReachable(initial_matrix_2, empty_tile_2)
 
-# initial_matrix = generate_random()
-initial_matrix = input_user('test_case1.txt')
-printMatrix(initial_matrix)
+# Main Program
+print("________________________________")
+print("|        15 Puzzle Solver       |")
+print("|_______________________________|")
+print("Pilih masukkan yang diinginkan : ")
+print("1. Acak ")
+print("2. Nama File")
+
+# Memilih ingin masukkan berupa acak atau file
+choice = int(input("Masukkan yang diinginkan (Pilih 1/2) = "))
+# Jika memilih acak
+if (choice == 1):
+    initial_matrix = generate_random()
+    empty_tile = find_empty_tile(initial_matrix)
+    start_time = time.time()
+    reach = isReachable(initial_matrix, empty_tile)
+    if (reach == False):
+        print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
+        printMatrix(initial_matrix)
+        print("\n Persoalan diatas tidak dapat diselesaikan")
+    else :
+        min_node = Solve(initial_matrix, empty_tile, final_matrix)
+        print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
+        printPath(min_node)
+        is_GUI = input("\nApakah ingin menampilkan GUI dari solusi (ya/tidak) = ")
+        if (is_GUI == "ya"):
+            printPathGUI(min_node)
+# Jika memilih nama file
+elif (choice == 2):
+    file_input = input("Masukkan nama file = ")
+    initial_matrix = input_user(file_input)
+    empty_tile = find_empty_tile(initial_matrix)
+    start_time = time.time()
+    reach = isReachable(initial_matrix, empty_tile)
+    if (reach == False):
+        print("salah")
+        print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
+        printMatrix(initial_matrix)
+        print("\n Persoalan diatas tidak dapat diselesaikan")
+    else :
+        min_node = Solve(initial_matrix, empty_tile, final_matrix)
+        printPath(min_node)
+        print("Waktu Eksekusi = %s detik\n" % (time.time() - start_time))
+        is_GUI = input("\nApakah ingin menampilkan GUI dari solusi (ya/tidak) = ")
+        if (is_GUI == "ya"):
+            printPathGUI(min_node)
+
+
+else :
+    print("Input salah")
+
 
 
