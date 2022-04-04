@@ -42,6 +42,37 @@ class node :
 rows = [ 1, 0, -1, 0 ]
 cols = [ 0, -1, 0, 1 ]
 
+# Mengecek apakah puzzle dapat diselesaikan
+def isReachable (initial_matrix, empty_tile) -> bool :
+    countX = 0
+    countLess = 0
+    for i in range(4):
+        for j in range(4):
+            m = i
+            n = j
+            if(m==i):
+                while(n<4):
+                    if(initial_matrix[m][n]<initial_matrix[i][j]):
+                        countLess += 1
+                    n+=1
+                m+=1
+            while(m<4):
+                n = 0
+                while(n<4):
+                    if(initial_matrix[m][n]<initial_matrix[i][j]):
+                        countLess += 1
+                    n+=1
+                m+=1
+    if ((empty_tile[0]+empty_tile[1]) %2 == 1):
+        countX += 1
+    print("\nNilai dari fungsi Kurang(i) = ", countLess)
+    countTotal = countX + countLess
+    print("Nilai dari fungsi Kurang(i) + X = ", countTotal, "\n")
+    if (countTotal % 2 == 0):
+        return True
+    else : 
+        return False
+
 # Menghitung banyaknya jumlah ubin tidak kosong yang tidak terdapat pada susunan akhir
 def countCost (initial_matrix, final_matrix) -> int :
     count = 0
@@ -131,37 +162,6 @@ def printPath(root_node):
     printPath(root_node.parent)
     printMatrix(root_node.matrix)
     print()
-
-# Mengecek apakah puzzle dapat diselesaikan
-def isReachable (initial_matrix, empty_tile) -> bool :
-    countX = 0
-    countLess = 0
-    for i in range(4):
-        for j in range(4):
-            m = i
-            n = j
-            if(m==i):
-                while(n<4):
-                    if(initial_matrix[m][n]<initial_matrix[i][j]):
-                        countLess += 1
-                    n+=1
-                m+=1
-            while(m<4):
-                n = 0
-                while(n<4):
-                    if(initial_matrix[m][n]<initial_matrix[i][j]):
-                        countLess += 1
-                    n+=1
-                m+=1
-    if ((empty_tile[0]+empty_tile[1]) %2 == 1):
-        countX += 1
-    print("\nNilai dari fungsi Kurang(i) = ", countLess)
-    countTotal = countX + countLess
-    print("Nilai dari fungsi Kurang(i) + X = ", countTotal, "\n")
-    if (countTotal % 2 == 0):
-        return True
-    else : 
-        return False
 
 # Masukan matriks yang dibangkitkan secara acak
 def generate_random():
