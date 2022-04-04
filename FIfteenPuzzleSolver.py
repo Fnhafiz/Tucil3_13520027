@@ -46,6 +46,8 @@ cols = [ 0, -1, 0, 1 ]
 def isReachable (initial_matrix, empty_tile) -> bool :
     countX = 0
     countLess = 0
+
+    # Menghitung fungsi Kurang(i)
     for i in range(4):
         for j in range(4):
             m = i
@@ -63,6 +65,8 @@ def isReachable (initial_matrix, empty_tile) -> bool :
                         countLess += 1
                     n+=1
                 m+=1
+
+    # Menghitung nilai X sesuai letak ubin kosong
     if ((empty_tile[0]+empty_tile[1]) %2 == 1):
         countX += 1
     print("\nNilai dari fungsi Kurang(i) = ", countLess)
@@ -133,12 +137,18 @@ def Solve(initial_matrix, empty_tile, final_matrix):
             return min_node
 
         for i in range(4):
+            is_visited = False
             new_tile = [min_node.empty_tile[0] + rows[i],
                         min_node.empty_tile[1] + cols[i],]
             
             if (isValid(new_tile[0], new_tile[1])):
                 child = newNode(min_node, min_node.matrix, min_node.empty_tile, new_tile, min_node.level + 1, final_matrix)
-                pq.push(child)
+                for i in range (len(visited_node)):
+                    if (visited_node[i].matrix == child.matrix):
+                        is_visited = True
+                if (is_visited == False):
+                    pq.push(child)
+                    visited_node.append(child)
 
 # Mengeluarkan output berupa matriks
 def printMatrix(mat):
@@ -273,8 +283,6 @@ elif (choice == 2):
         is_GUI = input("\nApakah ingin menampilkan GUI dari solusi (ya/tidak) = ")
         if (is_GUI == "ya"):
             printPathGUI(min_node)
-
-
 else :
     print("Input salah")
 
